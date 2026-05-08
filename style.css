@@ -652,6 +652,9 @@ figcaption {
 
 .season-col img {
     width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
     border-radius: 4px;
     margin: 20px 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
