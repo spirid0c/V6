@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="IsoGSM 3D — Atmospheric water vapor tracer dynamics">
+    <title>IsoGSM — Atmospheric Vapor Tracer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;1,300&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "netcdfjs": "https://esm.sh/netcdfjs",
+                "grib2js": "https://esm.sh/grib2js"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <audio id="sfx-ping" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Protocol error: serve via a local HTTP server (Live Server, python -m http.server, etc.)');
+        }
+    </script>
+
+    <!-- THE 3D BACKGROUND -->
+    <main id="main-content">
+        <div id="canvas-container"></div>
+        <div id="canvas-2d-container" style="display:none;">
+            <canvas id="canvas-2d"></canvas>
+        </div>
+    </main>
+
+    <!-- NARRATIVE SCROLLYTELLING -->
+    <div id="narrative-wrapper">
+        <section id="hero-section">
+            <h1>Moisture Commons</h1>
+            <button class="btn-enter-sim" id="btn-enter-direct">Enter Simulation</button>
+        </section>
+        
+        <section id="story-section">
+            <div class="story-container">
+
+                <div class="story-block">
+                    <h2>A Borderless Journey</h2>
+                    <p>Every summer, moisture carried by winds from distant oceans and lands falls as days of rain. It lands on your umbrella, is absorbed into the soil, and lingers as mist over the mountains. But long before you felt it, this moisture had already been on a monumental journey.</p>
+                    <p>Water is the original traveler. A single drop of rain falling in Paris or New York might have evaporated from the Sea of Japan weeks prior, crossing continents, hovering over bays, and riding atmospheric rivers in the sky. Through the <strong>Moisture Commons</strong> project, we invite you to follow these far-reaching paths and discover the living, sensitive system that connects our globe.</p>
+                </div>
+
+                <div class="story-block">
+                    <h2>Tracing the Invisible</h2>
+                    <p>How do we know where the rain comes from? Developed in collaboration with the Yoshimura Lab (IIS, UTokyo), this simulation relies on the cutting-edge IsoGSM (Global Spectral Model). By tracking isotopic water signatures—variations in the atomic weight of water molecules—scientists can "tag" water evaporating from a specific region, such as Japan, and track its exact trajectory across the Earth.</p>
+
+                    <figure class="story-image">
+                        <img src="isogsm-grid.jpg.png" alt="IsoGSM Model Visualization" onerror="this.style.display='none';">
+                        <figcaption>The IsoGSM model allows for the precise tracking of isotopic signatures across a global grid.</figcaption>
+                    </figure>
+
+                    <p>This allows us to untangle the complex web of the water cycle, proving that local weather is never truly local. It is a composite body, assembled from distant oceans and foreign lands.</p>
+                </div>
+
+                <div class="story-block">
+                    <h2>Potential and Manifestation</h2>
+                    <p>By interacting with the simulation, you can observe two distinct states of this journey. First, the <strong>Atmospheric Vapor (PWAT)</strong>. This is the latent potential of water. It drifts slowly, forming massive, invisible pools and rivers in the sky, carrying the humidity that fuels global weather.</p>
+
+                    <figure class="story-image">
+                        <img src="vapor-vs-rain.jpg.png" alt="Vapor and Rain comparison" onerror="this.style.display='none';">
+                        <figcaption>Comparing the silent flow of atmospheric vapor with the sudden physical impact of precipitation.</figcaption>
+                    </figure>
+
+                    <p>Then, the manifestation: <strong>Precipitation</strong>. When these warm, humid air masses meet cold fronts or mountain ranges, the potential breaks. The moisture converges, condenses, and falls. What began as a silent drift over the Pacific suddenly becomes a torrential downpour in a distant city.</p>
+                </div>
+
+                <div class="story-block">
+                    <h2>The Pulse of the Seasons</h2>
+                    <p>These flows never arrive the same way twice. The global climate acts as a massive engine, driven by the shifting pulse of the seasons. By comparing our datasets, you can witness the heartbeat of the Earth.</p>
+
+                    <div class="season-grid">
+                        <div class="season-col">
+                            <h3>Summer 2017</h3>
+                            <img src="summer-flow.jpg.png" alt="Summer atmospheric flows" onerror="this.style.display='none';">
+                            <p>In Summer, the Asian Continent heats up, pulling in massive monsoonal winds. Intense solar radiation and typhoons push Japanese moisture deep into the Pacific, creating violent but localized cycles of evaporation and heavy rainfall.</p>
+                        </div>
+                        <div class="season-col">
+                            <h3>Winter 2018</h3>
+                            <img src="winter-flow.jpg.png" alt="Winter atmospheric flows" onerror="this.style.display='none';">
+                            <p>In Winter, the rhythm shifts entirely. The fierce Siberian high-pressure system and the roaring polar jet streams act as a catapult. Moisture is violently stripped from the ocean surface and blasted across the Pacific, reaching North America in a matter of days.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="story-block">
+                    <h2>A Shared Climate</h2>
+                    <p>Climate change is an urgent global challenge, yet public understanding of these interconnected systems remains limited. Data alone cannot convey how a drought in one hemisphere might be linked to the evaporation cycles of another.</p>
+                    <p>By visualizing the global circulation of water and its shared, public nature, <strong>Moisture Commons</strong> challenges the geopolitical boundaries we draw on maps. It fosters a collective awareness: the atmosphere belongs to no one, and therefore, to everyone.</p>
+                </div>
+
+                <div class="launch-container">
+                    <button id="btn-enter-story">Enter the Simulation</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- WORKBENCH UI -->
+    <div id="app-ui" style="opacity: 0; pointer-events: none; transition: opacity 1.5s ease;">
+        
+        <!-- TOP BAR -->
+        <div id="top-bar">
+            <div class="top-left">
+                <div class="tabs">
+                    <div id="tab-archives" class="tab active-tab">Archives</div>
+                    <div id="tab-upload" class="tab">Local Import</div>
+                </div>
+            </div>
+
+            <div class="top-center">
+                <div id="archive-specific-ui" style="display: flex; gap: 30px;">
+                    <!-- Les infos Tracer et Day ont été supprimées pour un design plus minimaliste -->
+                </div>
+                <div id="local-specific-ui" style="display:none; gap: 30px;">
+                    <!-- Dynamic select -->
+                </div>
+                <div id="upload-view" style="display:none; gap: 15px; align-items: center;">
+                    <button id="btn-back-archives" class="btn-minimal">← Back</button>
+                    <button id="btn-browse" class="btn-minimal">Browse Files</button>
+                    <input type="file" id="file-input" style="display: none;">
+                    <span style="font-size: 10px; color: #888;">(.nc, .bin, .ft supported)</span>
+                </div>
+            </div>
+
+            <div class="top-right" style="display: flex; gap: 15px; align-items: center;">
+                <div id="archive-data-group">
+                    <button id="toggle-data" class="btn-minimal">Season: Summer</button>
+                </div>
+                <button id="btn-toggle-data-type" class="btn-minimal" style="color: var(--text-accent);">Mode: Vapor</button>
+                <button id="btn-toggle-wind" class="btn-minimal" style="color: var(--text-secondary);">Wind: OFF</button>
+                <button id="btn-toggle-view" class="btn-minimal">View: 3D</button>
+                <button id="btn-toggle-autorotate" class="btn-minimal">Auto-Rotate: ON</button>
+                <button id="btn-lang" class="btn-minimal">EN / JP</button>
+            </div>
+        </div>
+
+        <!-- BOTTOM CONSOLE -->
+        <div id="bottom-console">
+            <!-- PLAYBACK -->
+            <div id="playback-console">
+                <span id="date-display">01 JUL 2017</span>
+                <button id="btn-play" class="btn-minimal">▶ Play</button>
+                <button id="btn-speed" class="btn-minimal">1x</button>
+                <div class="slider-wrap" style="flex-grow: 1;">
+                    <input type="range" id="time-slider" min="0" max="90" value="0">
+                </div>
+            </div>
+
+            <!-- RANKING -->
+            <div id="ranking-horizontal">
+                <div class="city-slot" id="slot-0"></div>
+                <div class="city-slot" id="slot-1"></div>
+                <div class="city-slot" id="slot-2"></div>
+            </div>
+        </div>
+
+        <!-- LEGEND (Floating Bottom Left) -->
+        <div class="legend" style="position: absolute; bottom: 100px; left: 20px;">
+            <div class="legend-title">Atmospheric Vapor [kg/m²]</div>
+            <div class="color-blocks">
+                <div style="background:#ffffff; color:#000;">Tr</div>
+                <div style="background:#f2f9ff"></div>
+                <div style="background:#e5f4ff"></div>
+                <div style="background:#cceaff"></div>
+                <div style="background:#b2e0ff"></div>
+                <div style="background:#99d1ff"></div>
+                <div style="background:#84c1ff"></div>
+                <div style="background:#70b2ff"></div>
+                <div style="background:#60a5f9"></div>
+                <div style="background:#5199ef"></div>
+                <div style="background:#478ee5"></div>
+                <div style="background:#337ad1"></div>
+                <div style="background:#2e70c4"></div>
+                <div style="background:#1c467a; color:#fff;">&gt;10</div>
+            </div>
+            <div class="color-labels">
+                <span>0.001</span>
+                <span>0.05</span>
+                <span>10.0</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
