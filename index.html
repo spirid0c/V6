@@ -41,86 +41,14 @@
         </div>
     </main>
 
-    <!-- NARRATIVE SCROLLYTELLING -->
-    <div id="narrative-wrapper">
-        <section id="hero-section">
-            <h1>Moisture Commons</h1>
-            <button class="btn-enter-sim" id="btn-enter-direct">Enter Simulation</button>
-        </section>
-        
-        <section id="story-section">
-            <div class="story-container">
-
-                <div class="story-block">
-                    <h2>A Borderless Journey</h2>
-                    <p>Every summer, moisture carried by winds from distant oceans and lands falls as days of rain. It lands on your umbrella, is absorbed into the soil, and lingers as mist over the mountains. But long before you felt it, this moisture had already been on a monumental journey.</p>
-                    <p>Water is the original traveler. A single drop of rain falling in Paris or New York might have evaporated from the Sea of Japan weeks prior, crossing continents, hovering over bays, and riding atmospheric rivers in the sky. Through the <strong>Moisture Commons</strong> project, we invite you to follow these far-reaching paths and discover the living, sensitive system that connects our globe.</p>
-                </div>
-
-                <div class="story-block">
-                    <h2>Tracing the Invisible</h2>
-                    <p>How do we know where the rain comes from? Developed in collaboration with the Yoshimura Lab (IIS, UTokyo), this simulation relies on the cutting-edge IsoGSM (Global Spectral Model). By tracking isotopic water signatures—variations in the atomic weight of water molecules—scientists can "tag" water evaporating from a specific region, such as Japan, and track its exact trajectory across the Earth.</p>
-
-                    <figure class="story-image">
-                        <img src="isogsm-grid.jpg.png" alt="IsoGSM Model Visualization" onerror="this.style.display='none';">
-                        <figcaption>The IsoGSM model allows for the precise tracking of isotopic signatures across a global grid.</figcaption>
-                    </figure>
-
-                    <p>This allows us to untangle the complex web of the water cycle, proving that local weather is never truly local. It is a composite body, assembled from distant oceans and foreign lands.</p>
-                </div>
-
-                <div class="story-block">
-                    <h2>Potential and Manifestation</h2>
-                    <p>By interacting with the simulation, you can observe two distinct states of this journey. First, the <strong>Atmospheric Vapor (PWAT)</strong>. This is the latent potential of water. It drifts slowly, forming massive, invisible pools and rivers in the sky, carrying the humidity that fuels global weather.</p>
-
-                    <figure class="story-image">
-                        <img src="vapor-vs-rain.jpg.png" alt="Vapor and Rain comparison" onerror="this.style.display='none';">
-                        <figcaption>Comparing the silent flow of atmospheric vapor with the sudden physical impact of precipitation.</figcaption>
-                    </figure>
-
-                    <p>Then, the manifestation: <strong>Precipitation</strong>. When these warm, humid air masses meet cold fronts or mountain ranges, the potential breaks. The moisture converges, condenses, and falls. What began as a silent drift over the Pacific suddenly becomes a torrential downpour in a distant city.</p>
-                </div>
-
-                <div class="story-block">
-                    <h2>The Pulse of the Seasons</h2>
-                    <p>These flows never arrive the same way twice. The global climate acts as a massive engine, driven by the shifting pulse of the seasons. By comparing our datasets, you can witness the heartbeat of the Earth.</p>
-
-                    <div class="season-grid">
-                        <div class="season-col">
-                            <h3>Summer 2017</h3>
-                            <img src="summer-flow.jpg.png" alt="Summer atmospheric flows" onerror="this.style.display='none';">
-                            <p>In Summer, the Asian Continent heats up, pulling in massive monsoonal winds. Intense solar radiation and typhoons push Japanese moisture deep into the Pacific, creating violent but localized cycles of evaporation and heavy rainfall.</p>
-                        </div>
-                        <div class="season-col">
-                            <h3>Winter 2018</h3>
-                            <img src="winter-flow.jpg.png" alt="Winter atmospheric flows" onerror="this.style.display='none';">
-                            <p>In Winter, the rhythm shifts entirely. The fierce Siberian high-pressure system and the roaring polar jet streams act as a catapult. Moisture is violently stripped from the ocean surface and blasted across the Pacific, reaching North America in a matter of days.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="story-block">
-                    <h2>A Shared Climate</h2>
-                    <p>Climate change is an urgent global challenge, yet public understanding of these interconnected systems remains limited. Data alone cannot convey how a drought in one hemisphere might be linked to the evaporation cycles of another.</p>
-                    <p>By visualizing the global circulation of water and its shared, public nature, <strong>Moisture Commons</strong> challenges the geopolitical boundaries we draw on maps. It fosters a collective awareness: the atmosphere belongs to no one, and therefore, to everyone.</p>
-                </div>
-
-                <div class="launch-container">
-                    <button id="btn-enter-story">Enter the Simulation</button>
-                </div>
-            </div>
-        </section>
-    </div>
-
     <!-- WORKBENCH UI -->
-    <div id="app-ui" style="opacity: 0; pointer-events: none; transition: opacity 1.5s ease;">
+    <div id="app-ui">
         
         <!-- TOP BAR -->
         <div id="top-bar">
             <div class="top-left">
-                <div class="tabs">
+                <div class="tabs" style="display:none;">
                     <div id="tab-archives" class="tab active-tab">Archives</div>
-                    <div id="tab-upload" class="tab">Local Import</div>
                 </div>
             </div>
 
@@ -130,12 +58,6 @@
                 </div>
                 <div id="local-specific-ui" style="display:none; gap: 30px;">
                     <!-- Dynamic select -->
-                </div>
-                <div id="upload-view" style="display:none; gap: 15px; align-items: center;">
-                    <button id="btn-back-archives" class="btn-minimal">← Back</button>
-                    <button id="btn-browse" class="btn-minimal">Browse Files</button>
-                    <input type="file" id="file-input" style="display: none;">
-                    <span style="font-size: 10px; color: #888;">(.nc, .bin, .ft supported)</span>
                 </div>
             </div>
 
