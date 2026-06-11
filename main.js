@@ -14,7 +14,7 @@ const PARAMS = {
     displayMode: 'pwat', // 'pwat' (Vapeur) ou 'precip' (Vapeur + Nuages/Pluie)
 };
 let hitRegistry = [];
-let isCinematicMode = true;
+let isCinematicMode = false;
 
 const TRANSLATIONS = {
     EN: {
@@ -1910,142 +1910,8 @@ updateLanguageUI(); // Initialisation de la langue UI
 
 // ============================================================================
 // ── UI V3 : DRAG & DROP ET LECTURE MULTIPLE (.bin / .nc) ──
+// Removed import UI logic
 // ============================================================================
-const tabArchives = document.getElementById('tab-archives');
-const tabUpload = document.getElementById('tab-upload');
-const uploadView = document.getElementById('upload-view');
-const dropZoneBox = document.getElementById('drop-zone-box');
-const btnBrowse = document.getElementById('btn-browse');
-const fileInput = document.getElementById('file-input');
-
-// 1. Activation de la sélection multiple
-if (fileInput) {
-    fileInput.setAttribute('multiple', '');
-    fileInput.setAttribute('accept', '.nc,.bin,.ft*');
-}
-
-// -- VÉRITABLE DRAG & DROP --
-if (dropZoneBox) {
-    dropZoneBox.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZoneBox.style.background = 'rgba(255,255,255,0.1)';
-        dropZoneBox.style.border = '2px dashed #00bfff';
-    });
-    dropZoneBox.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        dropZoneBox.style.background = 'transparent';
-        dropZoneBox.style.border = 'none';
-    });
-    dropZoneBox.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZoneBox.style.background = 'transparent';
-        dropZoneBox.style.border = 'none';
-
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            handleFileSelection(e.dataTransfer.files);
-        }
-    });
-}
-
-// --- LOGIQUE DES ONGLETS AVEC RESET ---
-// --- LOGIQUE DES ONGLETS CORRIGÉE ---
-// --- LOGIQUE DES ONGLETS CORRIGÉE ET COMPLÈTE ---
-if (tabArchives && tabUpload) {
-
-    // 1. CLIC SUR ARCHIVES
-    tabArchives.addEventListener('click', () => {
-        resetRanking();
-        // 1. Arrêt de la lecture
-        isPlaying = false;
-        btnPlay.textContent = '▶ Play';
-        btnPlay.classList.remove('playing');
-
-        // 2. Mise en surbrillance de l'onglet
-        tabArchives.classList.add('active-tab');
-        tabUpload.classList.remove('active-tab');
-
-        // 3. Gestion de l'affichage des menus
-        if (uploadView) uploadView.style.display = 'none';
-        if (archiveUI) archiveUI.style.display = 'block';
-        if (localUI) localUI.style.display = 'none'; // Cache les options locales
-        if (commonUI) commonUI.style.display = 'block'; // On remontre le bouton Play
-        const archiveDataGroup = document.getElementById('archive-data-group');
-        if (archiveDataGroup) archiveDataGroup.style.display = 'block';
-
-        // 4. On remet la date dans le coin gauche
-        if (uiDateDisplay) {
-            uiDateDisplay.parentElement.style.width = "auto";
-            uiDateDisplay.parentElement.style.textAlign = "left";
-        }
-
-        // 5. On recharge les données d'archives
-        isLocalData = false;
-        PARAMS.currentFrame = 0;
-        loadData();
-    });
-
-    // 2. CLIC SUR IMPORT LOCAL
-    tabUpload.addEventListener('click', () => {
-        resetRanking();
-        // 1. Arrêt de la lecture
-        isPlaying = false;
-        btnPlay.textContent = '▶ Play';
-        btnPlay.classList.remove('playing');
-
-        // 2. Mise en surbrillance de l'onglet
-        tabUpload.classList.add('active-tab');
-        tabArchives.classList.remove('active-tab');
-
-        // 3. Gestion de l'affichage des menus
-        if (archiveUI) archiveUI.style.display = 'none'; // Cache (Period, Tracer...)
-        if (localUI) localUI.style.display = 'block'; // Affiche les options locales s'il y a lieu
-        const archiveDataGroup = document.getElementById('archive-data-group');
-        if (archiveDataGroup) archiveDataGroup.style.display = 'none';
-
-        if (localBuffer) {
-            uploadView.style.display = 'none'; // On cache la zone de drop pour afficher le globe
-            if (commonUI) commonUI.style.display = 'block'; // Affiche la barre de lecture
-        } else {
-            uploadView.style.display = 'flex'; // Affiche la zone de drop
-            if (commonUI) commonUI.style.display = 'none'; // Cache le bouton Play
-        }
-
-        // 4. Étire le conteneur et centre le texte au milieu de l'écran si pas de données locales
-        if (uiDateDisplay) {
-            if (!localBuffer) {
-                uiDateDisplay.innerText = "WAITING FOR FILES...";
-                uiDateDisplay.parentElement.style.width = "100%";
-                uiDateDisplay.parentElement.style.textAlign = "center";
-                uiDateDisplay.parentElement.style.display = "block";
-            } else {
-                uiDateDisplay.parentElement.style.width = "auto";
-                uiDateDisplay.parentElement.style.textAlign = "left";
-                // L'affichage de la bannière se mettra à jour automatiquement via updateFrame()
-            }
-        }
-
-        // 5. Déclenche la fonction qui met le globe à zéro
-        isLocalData = true;
-        updateFrame();
-    });
-
-    // Le clic sur "Retour aux Archives"
-    const btnBackArchives = document.getElementById('btn-back-archives');
-    if (btnBackArchives) {
-        btnBackArchives.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (tabArchives) tabArchives.click();
-        });
-    }
-
-    // Le bouton parcourir
-    btnBrowse.addEventListener('click', (e) => {
-        e.stopPropagation();
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', (e) => handleFileSelection(e.target.files));
-}
 
 // 2. Validation et Routage (Version Multi-fichiers)
 function handleFileSelection(files) {
@@ -2382,22 +2248,5 @@ CITIES_DB.forEach(city => {
 initComparisonSlots(); // Initialise les menus déroulants en bas
 updateFrame();
 
-// --- NARRATIVE SCROLL LOGIC ---
-const narrativeWrapper = document.getElementById('narrative-wrapper');
-const appUi = document.getElementById('app-ui');
-
-function enterSimulation() {
-    isCinematicMode = false;
-    lastInteractionTime = performance.now();
-    narrativeWrapper.style.opacity = '0';
-    setTimeout(() => {
-        narrativeWrapper.style.display = 'none';
-        appUi.style.opacity = '1';
-        document.body.style.overflow = 'hidden';
-    }, 1000);
-}
-
-['btn-enter-direct', 'btn-enter-story'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.addEventListener('click', enterSimulation);
-});
+// --- NARRATIVE SCROLL LOGIC REMOVED ---
+document.body.style.overflow = 'hidden';
